@@ -454,233 +454,141 @@ export async function getDetailedConnectivityStatus() {
 // Auth helper functions
 export const auth = {
   signUp: async (email: string, password: string, userData: any) => {
+    // Check demo mode first
+    if (checkDemoMode()) {
+      console.log('🎯 simulating demo signup');
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      const demoUser = {
+        id: `demo_${Date.now()}`,
+        email,
+        profile: {
+          ...userData,
+          id: `demo_${Date.now()}`,
+          userId: `demo_${Date.now()}`,
+          isAvailable: true
+        }
+      };
+      return { user: demoUser, session: { access_token: 'demo_token' } };
+    }
+
     try {
-      // Check if this is a demo email - don't allow registration for demo emails
-      if (email in DEMO_USERS) {
-        throw new Error('This email is reserved for demo accounts. Please use the Sign In tab with password: Demo123!');
+      console.log('🔐 Attempting Supabase signup for:', email);
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            fullName: userData.fullName,
+            role: userData.role,
+            phoneNumber: userData.phoneNumber,
+            location: userData.location,
+            bloodType: userData.bloodType,
+            organizationType: userData.organizationType,
+            organizationName: userData.organizationName
+          }
+        }
+      });
+
+      if (error) {
+        console.error('Supabase signup error:', error);
+        throw error;
       }
 
-      console.log('🔍 Checking server connectivity for registration...');
-
-      // Check connectivity first
-      const isConnected = await quickConnectivityCheck();
-
-      if (!isConnected) {
-        throw new Error('Unable to connect to registration servers. Please check your internet connection and try again, or use demo accounts for offline access.');
-      }
-
-      console.log('✅ Server connected, attempting registration...');
-
-      // Use our custom signup endpoint that stores additional profile data
-      const result = await withTimeout(
-        apiCall('/signup', {
-          method: 'POST',
-          body: JSON.stringify({
-            email,
-            password,
-            ...userData
-          }),
-        }),
-        10000 // 10 second timeout for signup
-      );
-
-      console.log('✅ Registration successful');
-      return result;
-
+      console.log('✅ Supabase signup successful:', data.user?.id);
+      return data;
     } catch (error: any) {
-      console.error('SignUp error:', error);
+      console.error('Signup error:', error);
 
-      // Enhanced error handling for registration
-      if (error.message?.includes('User already registered') ||
-        error.message?.includes('already been registered') ||
-        error.message?.includes('already exists')) {
-        throw new Error('An account with this email already exists. Please use the Sign In tab or try a different email address.');
+      if (error.message?.includes('Database error saving new user')) {
+        throw new Error('Account created but profile setup failed. Please contact support.');
       }
-
-      if (error.message?.includes('reserved for demo')) {
-        throw error; // Re-throw demo account error as-is
-      }
-
-      if (error.message?.includes('Email logins are disabled') ||
-        error.message?.includes('logins are disabled') ||
-        error.message?.includes('signup is disabled') ||
-        error.message?.includes('registration is disabled')) {
-        throw new Error('Account registration is currently unavailable. Please use demo accounts for offline access.');
-      }
-
-      if (error.message?.includes('timeout') ||
-        error.message?.includes('Failed to fetch') ||
-        error.message?.includes('Network') ||
-        error.message?.includes('aborted') ||
-        error.message?.includes('Unable to connect') ||
-        error.name === 'AbortError') {
-        throw new Error('Network connection failed. Please check your internet connection and try again.');
-      }
-
-      if (error.message?.includes('Invalid email')) {
-        throw new Error('Please enter a valid email address.');
-      }
-
-      if (error.message?.includes('Password')) {
-        throw new Error('Password must be at least 8 characters with uppercase, lowercase, numbers, and special characters.');
-      }
-
-      if (error.message?.includes('Failed to create user')) {
-        throw new Error('Registration failed. This email might already be in use or there was a server error.');
-      }
-
-      // Generic fallback with helpful message
-      throw new Error(error.message || 'Registration failed. Please check your internet connection and try again.');
+      throw error;
     }
   },
 
   signIn: async (email: string, password: string) => {
-    // First, try demo authentication for known demo accounts
-    if (email in DEMO_USERS) {
-      console.log('🎯 Demo account detected, using offline mode');
-      try {
-        return demoAuth(email, password);
-      } catch (demoError: any) {
-        throw new Error('Incorrect password for demo account. Please use: Demo123!');
-      }
+    // Check demo mode first
+    if (email in DEMO_USERS || email.endsWith('@demo.com')) {
+      console.log('🎯 Using demo login');
+      const demoUser = DEMO_USERS[email as keyof typeof DEMO_USERS] || DEMO_USERS['donor@demo.com'];
+      localStorage.setItem('demo_session', JSON.stringify({ user: { email }, access_token: 'demo_token' }));
+      localStorage.setItem('demo_profile', JSON.stringify(demoUser.profile));
+      setDemoMode(true);
+      return { user: { email }, session: { access_token: 'demo_token' } };
     }
 
-    // For non-demo accounts, try authentication with aggressive fallback to demo mode
     try {
-      console.log('🔍 Attempting authentication for real account...');
+      console.log('🔐 Attempting Supabase login for:', email);
 
-      // Quick connectivity check with very short timeout
-      const isConnected = await quickConnectivityCheck();
-
-      if (!isConnected) {
-        console.log('⚠️ Servers not reachable - automatically suggesting demo mode');
-        // Instead of throwing an error, return a special response that suggests demo mode
-        return {
-          requiresDemoMode: true,
-          message: 'Servers are currently unavailable. Would you like to try our demo accounts instead?',
-          demoSuggestion: true
-        };
-      }
-
-      console.log('✅ Server connected, attempting authentication...');
-
-      // Try normal Supabase authentication with very short timeout
-      const { data, error } = await withTimeout(
-        supabase.auth.signInWithPassword({
-          email,
-          password,
-        }),
-        2000 // Very short 2 second timeout
-      );
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
       if (error) {
-        console.error('Authentication error:', error);
-
-        if (error.message?.includes('Invalid login credentials')) {
-          throw new Error('Invalid email or password. Please check your credentials.');
+        console.error('Supabase login error:', error);
+        if (error.message === 'Invalid login credentials') {
+          throw new Error('Invalid email or password');
         }
-
-        if (error.message?.includes('Email not confirmed')) {
-          throw new Error('Email not verified. Please check your email for verification link.');
-        }
-
-        if (error.message?.includes('Email logins are disabled') ||
-          error.message?.includes('logins are disabled')) {
-          console.log('⚠️ Email authentication is disabled - suggesting demo mode');
-          return {
-            requiresDemoMode: true,
-            message: 'Email authentication is currently disabled. Please try our demo accounts.',
-            demoSuggestion: true
-          };
-        }
-
-        // For any authentication service errors, suggest demo mode instead of throwing
-        return {
-          requiresDemoMode: true,
-          message: 'Authentication service is temporarily unavailable. Would you like to try demo accounts?',
-          demoSuggestion: true
-        };
-      }
-
-      if (!data.session) {
-        return {
-          requiresDemoMode: true,
-          message: 'Authentication failed. Would you like to try demo accounts instead?',
-          demoSuggestion: true
-        };
-      }
-
-      console.log('✅ Real account authentication successful');
-      return data;
-
-    } catch (error: any) {
-      console.error('SignIn error:', error);
-
-      // For credential errors, still throw them normally
-      if (error.message?.includes('Invalid login credentials') ||
-        error.message?.includes('Invalid email or password') ||
-        error.message?.includes('Email not verified')) {
         throw error;
       }
 
-      // For all network/connectivity errors, suggest demo mode instead of throwing
-      console.log('🔧 Network error detected, suggesting demo mode gracefully');
-      return {
-        requiresDemoMode: true,
-        message: 'Cannot connect to servers right now. Would you like to explore with demo accounts?',
-        demoSuggestion: true
-      };
+      console.log('✅ Supabase login successful');
+      return data;
+    } catch (error: any) {
+      console.error('Sign in error:', error);
+
+      if (error.message?.includes('Failed to fetch') ||
+        error.message?.includes('Network request failed')) {
+        throw new Error('Unable to connect to login server. Please check your internet connection.');
+      }
+
+      throw error;
     }
   },
 
   signOut: async () => {
+    // Clear demo data
+    localStorage.removeItem('demo_session');
+    localStorage.removeItem('demo_profile');
+    setDemoMode(false);
+
+    if (checkDemoMode()) return;
+
     try {
-      const { error } = await withTimeout(supabase.auth.signOut(), 5000);
+      const { error } = await supabase.auth.signOut();
       if (error) throw error;
-    } catch (error: any) {
-      console.error('SignOut error:', error);
-      // Don't throw on signout errors, just log them
-    } finally {
-      // Always clear demo data on signout
-      localStorage.removeItem('demo_session');
-      localStorage.removeItem('demo_profile');
+      localStorage.removeItem('bloodconnect_stay_logged_in');
+      localStorage.removeItem('bloodconnect_session_token');
+    } catch (error) {
+      console.error('Sign out error:', error);
     }
   },
 
   getSession: async () => {
-    // Check demo mode first
     const demoSession = localStorage.getItem('demo_session');
     if (demoSession) {
-      console.log('🎯 Using demo session');
       setDemoMode(true);
       return JSON.parse(demoSession);
     }
 
-    // If we're in demo mode but no session, return null
-    if (checkDemoMode()) {
-      return null;
-    }
+    if (checkDemoMode()) return null;
 
     try {
-      const { data: { session }, error } = await withTimeout(
-        supabase.auth.getSession(),
-        1000 // Very short timeout for session check
-      );
+      const { data: { session }, error } = await supabase.auth.getSession();
       if (error) throw error;
       return session;
     } catch (error: any) {
       console.error('GetSession error:', error);
-      // Don't throw on session errors, just return null
       return null;
     }
   },
 
   getUser: async () => {
     try {
-      const { data: { user }, error } = await withTimeout(
-        supabase.auth.getUser(),
-        5000
-      );
+      const { data: { user }, error } = await supabase.auth.getUser();
       if (error) throw error;
       return user;
     } catch (error: any) {
@@ -704,85 +612,89 @@ export const profile = {
     // If we're in demo mode but no profile, try to restore from demo session
     const demoSession = localStorage.getItem('demo_session');
     if (demoSession || checkDemoMode()) {
-      console.log('🔧 Demo mode detected, attempting to restore profile');
-
-      // Try to restore demo profile from session
-      if (demoSession) {
-        try {
+      try {
+        if (demoSession) {
           const session = JSON.parse(demoSession);
           const email = session.user?.email;
-
           if (email && email in DEMO_USERS) {
-            const restoredProfile = DEMO_USERS[email as keyof typeof DEMO_USERS].profile;
-            localStorage.setItem('demo_profile', JSON.stringify(restoredProfile));
-            console.log('✅ Demo profile restored from session for:', email);
-            setDemoMode(true);
-            return { profile: restoredProfile };
+            const restored = DEMO_USERS[email as keyof typeof DEMO_USERS].profile;
+            localStorage.setItem('demo_profile', JSON.stringify(restored));
+            return { profile: restored };
           }
-        } catch (error) {
-          console.warn('Failed to restore demo profile from session:', error);
-          // Clean up corrupted session
-          localStorage.removeItem('demo_session');
         }
+        // Fallback
+        const fallback = { ...DEMO_USERS['donor@demo.com'].profile, id: `fallback_${Date.now()}` };
+        return { profile: fallback };
+      } catch (e) {
+        console.warn('Demo restore failed', e);
       }
-
-      // If still no profile, use a default demo profile (donor as fallback)
-      console.log('⚠️ Using fallback demo profile');
-      const fallbackProfile = {
-        ...DEMO_USERS['donor@demo.com'].profile,
-        id: `fallback_${Date.now()}`,
-        fullName: 'Demo User',
-        email: 'demo@fallback.com'
-      };
-      localStorage.setItem('demo_profile', JSON.stringify(fallbackProfile));
-      setDemoMode(true);
-      return { profile: fallbackProfile };
     }
 
     try {
-      // Get current user session first
-      const { data: { session } } = await supabase.auth.getSession();
+      // Get current user session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-      if (session?.user?.id) {
-        // Fetch from Supabase 'users' table
-        const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        if (data) {
-          // Map snake_case DB columns to camelCase profile object
-          const userProfile = {
-            id: data.id,
-            userId: data.id,
-            email: data.email,
-            fullName: data.full_name,
-            role: data.role,
-            bloodType: data.blood_type,
-            location: data.location,
-            phoneNumber: data.phone_number,
-            createdAt: data.created_at,
-            // These fields might be missing in DB, keep defaults or parse from location if possible
-            city: data.location?.split(',')[0]?.trim() || 'Unknown',
-            state: data.location?.split(',')[1]?.trim() || 'Unknown',
-            country: 'India',
-            isAvailable: true
-          };
-          return { profile: userProfile };
-        }
+      if (sessionError || !session?.user) {
+        return { profile: null };
       }
 
-      // Fallback to API if DB fetch fails or no session (though session is needed)
-      return await withTimeout(apiCall('/profile'), 5000);
+      // Fetch from Supabase 'users' table
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          console.warn('⚠️ User profile not found in DB, using session metadata fallback');
+          const meta = session.user.user_metadata;
+
+          const fallbackProfile = {
+            id: session.user.id,
+            userId: session.user.id,
+            email: session.user.email,
+            fullName: meta.fullName || meta.full_name || 'User',
+            role: meta.role || 'user',
+            bloodType: meta.bloodType || meta.blood_type,
+            location: meta.location,
+            phoneNumber: meta.phoneNumber || meta.phone_number,
+            city: meta.location?.split(',')[0]?.trim() || 'Unknown',
+            state: meta.location?.split(',')[1]?.trim() || 'Unknown',
+            country: 'India',
+            isAvailable: true,
+            createdAt: new Date().toISOString()
+          };
+          return { profile: fallbackProfile };
+        }
+        throw error;
+      }
+
+      if (data) {
+        const userProfile = {
+          id: data.id,
+          userId: data.id,
+          email: data.email,
+          fullName: data.full_name,
+          role: data.role,
+          bloodType: data.blood_type,
+          location: data.location,
+          phoneNumber: data.phone_number,
+          createdAt: data.created_at,
+          city: data.location?.split(',')[0]?.trim() || 'Unknown',
+          state: data.location?.split(',')[1]?.trim() || 'Unknown',
+          country: 'India',
+          isAvailable: true
+        };
+        return { profile: userProfile };
+      }
+
+      return { profile: null };
+
     } catch (error: any) {
       console.error('Profile get error:', error);
-
-      if (error.message?.includes('timeout') ||
-        error.message?.includes('Failed to fetch') ||
-        error.message?.includes('Network') ||
-        error.message?.includes('aborted')) {
-        throw new Error('Network error while fetching profile. Please sign in again or use demo accounts.');
+      if (error.message?.includes('Failed to fetch') || error.message?.includes('Network')) {
+        throw new Error('Network error while loading profile. Please check your connection.');
       }
       throw error;
     }
