@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Smart Blood Donation Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    <span>BloodConnect</span>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#find-donors">Find Donors</a>
+                    <a href="#blood-banks">Blood Banks</a>
+                    <a href="#about">About</a>
+                </nav>
+
+                <div class="header-actions">
+                    <div class="emergency-info">
+                        <i class="fas fa-phone"></i>
+                        <span>Emergency: 911</span>
+                    </div>
+                    <a href="#" class="btn btn-outline">Sign In</a>
+                    <button onclick="showRegistrationPage('donor')" class="btn btn-primary">Register</button>
+                </div>
+
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="mobile-menu">
+                <nav class="mobile-nav">
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#find-donors">Find Donors</a>
+                    <a href="#blood-banks">Blood Banks</a>
+                    <a href="#about">About</a>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="#" class="btn btn-outline">Sign In</a>
+                        <button onclick="showRegistrationPage('donor')" class="btn btn-primary">Register</button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <i class="fas fa-heart"></i>
+                        <span>Save Lives • Real-Time Matching</span>
+                    </div>
+                    <h1 class="hero-title"> Blood Connect</h1>
+                    <p class="hero-description">
+                        Connecting donors and patients instantly through AI-powered matching. 
+                        Reduce waiting times, save more lives, and make blood donation more efficient than ever.
+                    </p>
+                    
+                    <div class="hero-buttons">
+                        <button onclick="showRegistrationPage('donor')" class="btn btn-primary btn-lg">
+                            <i class="fas fa-heart" style="margin-right: 0.5rem;"></i>
+                            Register as Donor
+                        </button>
+                        <button onclick="showRegistrationPage('patient')" class="btn btn-outline btn-lg">
+                            <i class="fas fa-users" style="margin-right: 0.5rem;"></i>
+                            Find Blood
+                        </button>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div>
+                            <div class="hero-stat-value">10K+</div>
+                            <div class="hero-stat-label">Active Donors</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-value">500+</div>
+                            <div class="hero-stat-label">Lives Saved</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-value">2 min</div>
+                            <div class="hero-stat-label">Avg Match Time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-demo">
+                    <div class="hero-card">
+                        <div class="match-found">
+                            <div class="pulse-dot"></div>
+                            <div>
+                                <div class="match-text-primary">Match Found!</div>
+                                <div class="match-text-secondary">Compatible donor 2.3km away</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="info-item">
+                                <span>Blood Type: O+</span>
+                                <span class="urgent-label">URGENT</span>
+                            </div>
+                            <div class="info-item">
+                                <span>Location: City Hospital</span>
+                                <i class="fas fa-clock" style="color: #9ca3af;"></i>
+                            </div>
+                            <div class="info-item">
+                                <span>Security: HIPAA Compliant</span>
+                                <i class="fas fa-shield-alt security-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-floating-1"></div>
+                    <div class="hero-floating-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2>Why Choose Our Platform?</h2>
+                <p style="font-size: 1.25rem; color: #4b5563; max-width: 48rem; margin: 1rem auto 0;">
+                    Advanced technology meets humanitarian purpose. Our platform revolutionizes blood donation 
+                    with smart matching, real-time tracking, and seamless user experience.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3 class="card-title">Real-Time Matching</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            AI-powered algorithm instantly matches compatible donors with patients based on blood type, location, and urgency.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3 class="card-title">Location-Based Search</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Find the nearest available donors or blood banks within your area for faster response times.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="card-title">Secure & Private</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            HIPAA-compliant platform ensuring all medical information is encrypted and protected.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3 class="card-title">24/7 Availability</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Round-the-clock access to emergency blood requests and donor notifications.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3 class="card-title">Mobile-First Design</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Optimized mobile app for quick access during emergencies and on-the-go donations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3 class="card-title">Community Network</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Build a trusted network of verified donors and healthcare providers in your area.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="card-title">Smart Notifications</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Intelligent alerts for urgent requests, appointment reminders, and donation opportunities.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="card-title">Inventory Tracking</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Real-time blood bank inventory management with expiration date tracking and alerts.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 class="card-title">Impact Dashboard</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Track your donation history and see the lives you've helped save through detailed analytics.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2>How It Works</h2>
+                <p style="font-size: 1.25rem; color: #4b5563; max-width: 32rem; margin: 1rem auto 0;">
+                    Four simple steps to connect life-saving donors with patients in need
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon blue">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="step-number">1</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Register</h3>
+                    <p style="color: #6b7280;">Create your profile as a donor or patient with basic medical information</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon purple">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="step-number">2</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Smart Matching</h3>
+                    <p style="color: #6b7280;">Our AI instantly finds compatible matches based on blood type and location</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon red">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="step-number">3</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Connect</h3>
+                    <p style="color: #6b7280;">Get notified of matches and coordinate with healthcare providers</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="step-number">4</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Save Lives</h3>
+                    <p style="color: #6b7280;">Complete the donation process and track your impact on the community</p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                    Emergency? Our platform responds in under 2 minutes for critical cases.
+                </p>
+                <div class="emergency-badge">
+                    <div class="pulse-dot"></div>
+                    <span>24/7 Emergency Response Available</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2>Making a Real Impact</h2>
+                <p style="font-size: 1.25rem; color: #fecaca; max-width: 32rem; margin: 1rem auto 0;">
+                    See how our platform is transforming blood donation and saving lives across communities
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">10,247</div>
+                    <div class="stat-label">Active Donors</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        +23% this month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value">1,586</div>
+                    <div class="stat-label">Lives Saved</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        +156 this week
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value">2.3 min</div>
+                    <div class="stat-label">Average Match Time</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        -45% faster
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="stat-value">127</div>
+                    <div class="stat-label">Cities Covered</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        +8 new cities
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-stats">
+                <div>
+                    <div class="bottom-stat-value">99.7%</div>
+                    <div class="bottom-stat-label">Success Rate</div>
+                </div>
+                <div>
+                    <div class="bottom-stat-value">24/7</div>
+                    <div class="bottom-stat-label">Platform Availability</div>
+                </div>
+                <div>
+                    <div class="bottom-stat-value"><30s</div>
+                    <div class="bottom-stat-label">Emergency Response</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section (Initially Hidden) -->
+    <section id="registration-section" class="registration-section" style="display: none;">
+        <div class="container">
+            <div class="registration-wrapper">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-4">Join BloodConnect</h1>
+                    <p class="text-xl text-gray-600">
+                        Create your account and start saving lives in your community
+                    </p>
+                </div>
+
+                <div class="registration-card">
+                    <div class="registration-header">
+                        <h2 class="text-center text-2xl mb-2">User Registration</h2>
+                        <p class="text-center text-gray-600 mb-8">
+                            Choose your registration type to get started
+                        </p>
+                    </div>
+
+                    <!-- Tab Navigation -->
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" data-tab="donor">
+                            <i class="fas fa-heart"></i>
+                            Blood Donor
+                        </button>
+                        <button class="tab-btn" data-tab="patient">
+                            <i class="fas fa-building"></i>
+                            Patient/Clinic
+                        </button>
+                    </div>
+
+                    <!-- Success Message (Initially Hidden) -->
+                    <div id="success-message" class="success-message" style="display: none;">
+                        <div class="success-content">
+                            <div class="success-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h2>Registration Successful!</h2>
+                            <p>Thank you for joining BloodConnect. We'll review your application and contact you within 24 hours.</p>
+                            <button onclick="showHomePage()" class="btn btn-primary">Continue to Dashboard</button>
+                        </div>
+                    </div>
+
+                    <!-- Donor Registration Form -->
+                    <div id="donor-form" class="tab-content active">
+                        <div class="info-banner donor-info">
+                            <i class="fas fa-heart"></i>
+                            <div>
+                                <h3>Donor Registration</h3>
+                                <p>Join thousands of heroes saving lives through blood donation. Your information is HIPAA-compliant and secure.</p>
+                            </div>
+                        </div>
+
+                        <form class="registration-form">
+                            <!-- Personal Information -->
+                            <div class="form-section">
+                                <h3 class="section-title">Personal Information</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name *</label>
+                                        <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name *</label>
+                                        <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="email">Email Address *</label>
+                                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number *</label>
+                                        <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="dateOfBirth">Date of Birth *</label>
+                                        <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bloodType">Blood Type *</label>
+                                        <select id="bloodType" name="bloodType" required>
+                                            <option value="">Select blood type</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="weight">Weight (lbs) *</label>
+                                        <input type="number" id="weight" name="weight" required placeholder="110" min="110">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Gender *</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label">
+                                            <input type="radio" name="gender" value="male" required>
+                                            <span>Male</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="gender" value="female" required>
+                                            <span>Female</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="gender" value="other" required>
+                                            <span>Other</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Address Information -->
+                            <div class="form-section">
+                                <h3 class="section-title">Address Information</h3>
+                                
+                                <div class="form-group">
+                                    <label for="address">Street Address</label>
+                                    <input type="text" id="address" name="address" placeholder="123 Main Street">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" id="city" name="city" placeholder="New York">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="state">State</label>
+                                        <input type="text" id="state" name="state" placeholder="NY">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zipCode">ZIP Code</label>
+                                        <input type="text" id="zipCode" name="zipCode" placeholder="10001">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Medical Information -->
+                            <div class="form-section">
+                                <h3 class="section-title">Medical Information</h3>
+                                
+                                <div class="form-group">
+                                    <label>Medical Conditions (Check all that apply)</label>
+                                    <div class="checkbox-grid">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="diabetes">
+                                            <span>Diabetes</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="hypertension">
+                                            <span>Hypertension</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="heart-disease">
+                                            <span>Heart Disease</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="hepatitis">
+                                            <span>Hepatitis</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="hiv">
+                                            <span>HIV/AIDS</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="cancer">
+                                            <span>Cancer</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="pregnancy">
+                                            <span>Pregnancy</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="surgery">
+                                            <span>Recent Surgery</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="medications">
+                                            <span>Medications</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="medicalConditions" value="none">
+                                            <span>None</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="medications">Current Medications</label>
+                                    <textarea id="medications" name="medications" rows="3" placeholder="List any medications you are currently taking..."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="lastDonation">Last Blood Donation Date (if applicable)</label>
+                                    <input type="date" id="lastDonation" name="lastDonation">
+                                </div>
+                            </div>
+
+                            <!-- Terms and Conditions -->
+                            <div class="form-section">
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label terms">
+                                        <input type="checkbox" name="agreedToTerms" required>
+                                        <span>I agree to the <a href="#">Terms of Service</a> and understand the blood donation process, risks, and benefits.</span>
+                                    </label>
+                                    
+                                    <label class="checkbox-label terms">
+                                        <input type="checkbox" name="agreedToPrivacy" required>
+                                        <span>I agree to the <a href="#">Privacy Policy</a> and consent to the collection and processing of my medical information in accordance with HIPAA guidelines.</span>
+                                    </label>
+                                    
+                                    <label class="checkbox-label terms">
+                                        <input type="checkbox" name="wantsNotifications" checked>
+                                        <span>I want to receive notifications about blood donation opportunities and emergencies in my area.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-submit">
+                                <i class="fas fa-heart"></i>
+                                Register as Donor
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Patient/Clinic Registration Form -->
+                    <div id="patient-form" class="tab-content">
+                        <div class="info-banner patient-info">
+                            <i class="fas fa-building"></i>
+                            <div>
+                                <h3>Patient/Clinic Registration</h3>
+                                <p>Register your healthcare organization to access our blood donation network and emergency services.</p>
+                            </div>
+                        </div>
+
+                        <form class="registration-form">
+                            <!-- Organization Information -->
+                            <div class="form-section">
+                                <h3 class="section-title">Organization Information</h3>
+                                
+                                <div class="form-group">
+                                    <label for="organizationType">Organization Type *</label>
+                                    <select id="organizationType" name="organizationType" required>
+                                        <option value="">Select organization type</option>
+                                        <option value="hospital">Hospital</option>
+                                        <option value="clinic">Medical Clinic</option>
+                                        <option value="blood-bank">Blood Bank</option>
+                                        <option value="research">Research Institution</option>
+                                        <option value="emergency">Emergency Services</option>
+                                        <option value="individual">Individual Patient</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="organizationName">Organization Name *</label>
+                                    <input type="text" id="organizationName" name="organizationName" required placeholder="City General Hospital">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="contactPersonName">Contact Person *</label>
+                                        <input type="text" id="contactPersonName" name="contactPersonName" required placeholder="Dr. Jane Smith">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="licenseNumber">License/Registration Number</label>
+                                        <input type="text" id="licenseNumber" name="licenseNumber" placeholder="LIC123456789">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contact Information -->
+                            <div class="form-section">
+                                <h3 class="section-title">Contact Information</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="orgEmail">Email Address *</label>
+                                        <input type="email" id="orgEmail" name="email" required placeholder="contact@hospital.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orgPhone">Phone Number *</label>
+                                        <input type="tel" id="orgPhone" name="phone" required placeholder="(555) 123-4567">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="website">Website (Optional)</label>
+                                    <input type="url" id="website" name="website" placeholder="https://www.hospital.com">
+                                </div>
+                            </div>
+
+                            <!-- Address Information -->
+                            <div class="form-section">
+                                <h3 class="section-title">Address Information</h3>
+                                
+                                <div class="form-group">
+                                    <label for="orgAddress">Street Address *</label>
+                                    <input type="text" id="orgAddress" name="address" required placeholder="123 Medical Center Drive">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="orgCity">City</label>
+                                        <input type="text" id="orgCity" name="city" placeholder="New York">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orgState">State</label>
+                                        <input type="text" id="orgState" name="state" placeholder="NY">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orgZipCode">ZIP Code</label>
+                                        <input type="text" id="orgZipCode" name="zipCode" placeholder="10001">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Services -->
+                            <div class="form-section">
+                                <h3 class="section-title">Services & Specializations</h3>
+                                
+                                <div class="form-group">
+                                    <label>Services Offered (Check all that apply)</label>
+                                    <div class="checkbox-grid">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="emergency">
+                                            <span>Emergency Care</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="surgery">
+                                            <span>Surgery</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="oncology">
+                                            <span>Oncology</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="cardiology">
+                                            <span>Cardiology</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="pediatrics">
+                                            <span>Pediatrics</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="maternity">
+                                            <span>Maternity</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="trauma">
+                                            <span>Trauma Center</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="services" value="blood-banking">
+                                            <span>Blood Banking</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="specializations">Additional Specializations</label>
+                                    <textarea id="specializations" name="specializations" rows="3" placeholder="Describe any additional specializations or specific blood product needs..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Terms and Conditions -->
+                            <div class="form-section">
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label terms">
+                                        <input type="checkbox" name="agreedToTerms" required>
+                                        <span>I agree to the <a href="#">Terms of Service</a> and verify that this organization is legally authorized to request blood products.</span>
+                                    </label>
+                                    
+                                    <label class="checkbox-label terms">
+                                        <input type="checkbox" name="agreedToPrivacy" required>
+                                        <span>I agree to the <a href="#">Privacy Policy</a> and confirm compliance with HIPAA and other applicable healthcare privacy regulations.</span>
+                                    </label>
+                                    
+                                    <label class="checkbox-label terms">
+                                        <input type="checkbox" name="wantsNotifications" checked>
+                                        <span>I want to receive notifications about blood availability, emergency alerts, and platform updates.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-submit btn-patient">
+                                <i class="fas fa-building"></i>
+                                Register Organization
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Security Notice -->
+                    <div class="security-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4>Your Privacy & Security</h4>
+                            <p>All information is encrypted and HIPAA-compliant. We never share your personal data without consent. Our platform uses industry-standard security measures to protect your medical information.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section id="home-content" class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <div>
+                    <h2 style="color: #111827; margin-bottom: 1rem;">Ready to Save Lives?</h2>
+                    <p style="font-size: 1.25rem; color: #4b5563; margin-bottom: 2rem;">
+                        Join thousands of heroes making a difference in their communities. 
+                        Every donation counts, every match saves a life.
+                    </p>
+
+                    <div class="cta-cards">
+                        <div class="cta-card donor" onclick="showRegistrationPage('donor')">
+                            <div class="cta-card-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Be a Donor</h3>
+                            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Help save lives in your community</p>
+                            <a href="#" class="btn btn-primary" style="width: 100%;" onclick="event.preventDefault();">
+                                Register as Donor
+                                <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                            </a>
+                        </div>
+
+                        <div class="cta-card patient" onclick="showRegistrationPage('patient')">
+                            <div class="cta-card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3 style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Find Blood</h3>
+                            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Connect with compatible donors</p>
+                            <a href="#" class="btn btn-outline" style="width: 100%; border-color: #2563eb; color: #2563eb;" onclick="event.preventDefault();">
+                                Search Now
+                                <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center; margin-top: 2rem;">
+                        <div class="registration-info">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Download our mobile app for instant notifications</span>
+                        </div>
+                        <div class="app-badges">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+                                 alt="Get it on Google Play" class="app-badge">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
+                                 alt="Download on the App Store" class="app-badge">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="position: relative;">
+                    <div style="background: white; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 2rem;">
+                        <div class="text-center mb-6">
+                            <h3 style="color: #111827; margin-bottom: 0.5rem;">Quick Registration</h3>
+                            <p style="color: #6b7280;">Get started in less than 2 minutes</p>
+                        </div>
+                        
+                        <div>
+                            <div class="benefit-item green">
+                                <div class="benefit-check">✓</div>
+                                <span class="benefit-text">HIPAA Compliant</span>
+                            </div>
+                            
+                            <div class="benefit-item blue">
+                                <div class="benefit-check">✓</div>
+                                <span class="benefit-text">24/7 Support</span>
+                            </div>
+                            
+                            <div class="benefit-item purple">
+                                <div class="benefit-check">✓</div>
+                                <span class="benefit-text">Real-time Matching</span>
+                            </div>
+                        </div>
+
+                        <div class="disclaimer">
+                            <p class="disclaimer-text">
+                                By registering, you agree to our Terms of Service and Privacy Policy
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <i class="fas fa-heart"></i>
+                            <span>BloodConnect</span>
+                        </div>
+                        <p class="footer-description">
+                            Smart blood donation platform connecting donors and patients through real-time matching technology.
+                        </p>
+                        <div class="social-links">
+                            <i class="fab fa-facebook"></i>
+                            <i class="fab fa-twitter"></i>
+                            <i class="fab fa-instagram"></i>
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Find Donors</a></li>
+                        <li><a href="#">Register as Donor</a></li>
+                        <li><a href="#">Blood Banks</a></li>
+                        <li><a href="#">Emergency Request</a></li>
+                        <li><a href="#">How It Works</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Safety Guidelines</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (555) 123-BLOOD</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>help@bloodconnect.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>24/7 Emergency Line</span>
+                    </div>
+                    <div class="emergency-contact">
+                        <div class="emergency-contact-title">Emergency?</div>
+                        <div class="emergency-contact-text">Call 911 or use our instant match feature</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 BloodConnect. All rights reserved. Licensed healthcare platform.
+                </p>
+                <div class="footer-badges">
+                    <span>HIPAA Compliant</span>
+                    <span>FDA Approved</span>
+                    <span>ISO 27001 Certified</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

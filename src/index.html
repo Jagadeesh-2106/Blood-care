@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Blood Donation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Typography */
+        h1 { font-size: 2.5rem; font-weight: 700; line-height: 1.2; }
+        h2 { font-size: 2rem; font-weight: 700; line-height: 1.3; }
+        h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.4; }
+        h4 { font-size: 1.25rem; font-weight: 600; line-height: 1.4; }
+        p { font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.75rem; }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-red { color: #dc2626; }
+        .text-white { color: white; }
+        .text-gray { color: #6b7280; }
+        .bg-white { background-color: white; }
+        .bg-red { background-color: #dc2626; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-gray-900 { background-color: #111827; }
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        .border { border: 1px solid #e5e7eb; }
+
+        /* Grid System */
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .md\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .lg\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .lg\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* Flexbox */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .space-y-8 > * + * { margin-top: 2rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+
+        /* Padding and Margin */
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mt-12 { margin-top: 3rem; }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .logo i {
+            color: #dc2626;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #374151;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #dc2626;
+        }
+
+        .header-actions {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .emergency-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #dc2626;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .mobile-menu {
+            display: none;
+            padding: 1rem 0;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav a {
+            text-decoration: none;
+            color: #374151;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+            .header-actions { display: flex; }
+            .mobile-menu-btn { display: none; }
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.875rem;
+        }
+
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #dc2626;
+            color: white;
+            border-color: #dc2626;
+        }
+
+        .btn-primary:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .btn-outline:hover {
+            background-color: #fef2f2;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #fef2f2 0%, #fce7f3 100%);
+            padding: 5rem 0 8rem 0;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            space: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #fecaca;
+            color: #b91c1c;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding-top: 2rem;
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .hero-stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .hero-demo {
+            position: relative;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .match-found {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #f0fdf4;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pulse-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            background-color: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .match-text-primary {
+            font-weight: 600;
+            color: #166534;
+        }
+
+        .match-text-secondary {
+            font-size: 0.875rem;
+            color: #16a34a;
+        }
+
+        .hero-floating-1 {
+            position: absolute;
+            top: -1rem;
+            right: -1rem;
+            width: 5rem;
+            height: 5rem;
+            background-color: #fecaca;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .hero-floating-2 {
+            position: absolute;
+            bottom: -1.5rem;
+            left: -1.5rem;
+            width: 4rem;
+            height: 4rem;
+            background-color: #fce7f3;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hero-title {
+                font-size: 3.75rem;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 1.5rem 1.5rem 0 1.5rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #6b7280;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .feature-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #fecaca;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon i {
+            color: #dc2626;
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 5rem 0;
+            background-color: #f9fafb;
+        }
+
+        .step-card {
+            text-align: center;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            height: 100%;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .step-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 2rem;
+        }
+
+        .step-icon.blue { background-color: #dbeafe; color: #2563eb; }
+        .step-icon.purple { background-color: #ede9fe; color: #7c3aed; }
+        .step-icon.red { background-color: #fecaca; color: #dc2626; }
+        .step-icon.green { background-color: #dcfce7; color: #16a34a; }
+
+        .step-number {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            width: 2rem;
+            height: 2rem;
+            background-color: #dc2626;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .emergency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #fecaca;
+            color: #b91c1c;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            margin-top: 3rem;
+        }
+
+        /* Statistics Section */
+        .statistics {
+            padding: 5rem 0;
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+        }
+
+        .stat-icon i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #fecaca;
+            margin-bottom: 1rem;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            color: #fecaca;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .bottom-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .bottom-stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .bottom-stat-label {
+            color: #fecaca;
+        }
+
+        /* Call to Action Section */
+        .cta {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #f9fafb 0%, white 100%);
+        }
+
+        .cta-content {
+            display: grid;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .cta-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .cta-card {
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .cta-card.donor {
+            border-color: #fecaca;
+        }
+
+        .cta-card.donor:hover {
+            border-color: #f87171;
+        }
+
+        .cta-card.patient {
+            border-color: #dbeafe;
+        }
+
+        .cta-card.patient:hover {
+            border-color: #93c5fd;
+        }
+
+        .cta-card-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            transition: background-color 0.3s;
+        }
+
+        .cta-card.donor .cta-card-icon {
+            background-color: #fecaca;
+        }
+
+        .cta-card.donor:hover .cta-card-icon {
+            background-color: #fca5a5;
+        }
+
+        .cta-card.patient .cta-card-icon {
+            background-color: #dbeafe;
+        }
+
+        .cta-card.patient:hover .cta-card-icon {
+            background-color: #bfdbfe;
+        }
+
+        .cta-card-icon i {
+            font-size: 1.5rem;
+        }
+
+        .cta-card.donor .cta-card-icon i {
+            color: #dc2626;
+        }
+
+        .cta-card.patient .cta-card-icon i {
+            color: #2563eb;
+        }
+
+        .app-badges {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .app-badge {
+            height: 2.5rem;
+        }
+
+        .registration-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 1024px) {
+            .cta-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cta-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #111827;
+            color: white;
+            padding: 4rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .footer-brand {
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo i {
+            color: #ef4444;
+            font-size: 2rem;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links i {
+            color: #9ca3af;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .social-links i:hover {
+            color: white;
+        }
+
+        .footer-section h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #9ca3af;
+            margin-bottom: 0.75rem;
+        }
+
+        .emergency-contact {
+            background-color: #dc2626;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .emergency-contact-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .emergency-contact-text {
+            font-size: 0.75rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .footer-badges {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-badges span {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .bottom-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Info Items */
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-item span {
+            font-size: 0.875rem;
+        }
+
+        .urgent-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #dc2626;
+        }
+
+        .security-icon {
+            color: #16a34a;
+        }
+
+        /* Feature Benefits */
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-item.green {
+            background-color: #f0fdf4;
+        }
+
+        .benefit-item.blue {
+            background-color: #eff6ff;
+        }
+
+        .benefit-item.purple {
+            background-color: #faf5ff;
+        }
+
+        .benefit-check {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .benefit-item.green .benefit-check {
+            background-color: #22c55e;
+        }
+
+        .benefit-item.blue .benefit-check {
+            background-color: #3b82f6;
+        }
+
+        .benefit-item.purple .benefit-check {
+            background-color: #8b5cf6;
+        }
+
+        .benefit-text {
+            font-size: 0.875rem;
+        }
+
+        .benefit-item.green .benefit-text {
+            color: #166534;
+        }
+
+        .benefit-item.blue .benefit-text {
+            color: #1e40af;
+        }
+
+        .benefit-item.purple .benefit-text {
+            color: #6b21a8;
+        }
+
+        .disclaimer {
+            text-align: center;
+            padding-top: 1rem;
+        }
+
+        .disclaimer-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    <span>BloodConnect</span>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#find-donors">Find Donors</a>
+                    <a href="#blood-banks">Blood Banks</a>
+                    <a href="#about">About</a>
+                </nav>
+
+                <div class="header-actions">
+                    <div class="emergency-info">
+                        <i class="fas fa-phone"></i>
+                        <span>Emergency: 911</span>
+                    </div>
+                    <a href="#" class="btn btn-outline">Sign In</a>
+                    <a href="#" class="btn btn-primary">Register</a>
+                </div>
+
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="mobile-menu">
+                <nav class="mobile-nav">
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#find-donors">Find Donors</a>
+                    <a href="#blood-banks">Blood Banks</a>
+                    <a href="#about">About</a>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="#" class="btn btn-outline">Sign In</a>
+                        <a href="#" class="btn btn-primary">Register</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <i class="fas fa-heart"></i>
+                        <span>Save Lives • Real-Time Matching</span>
+                    </div>
+                    <h1 class="hero-title">Blood Donation Platform</h1>
+                    <p class="hero-description">
+                        Connecting donors and patients instantly through AI-powered matching. 
+                        Reduce waiting times, save more lives, and make blood donation more efficient than ever.
+                    </p>
+                    
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary btn-lg">
+                            <i class="fas fa-heart" style="margin-right: 0.5rem;"></i>
+                            Register as Donor
+                        </a>
+                        <a href="#" class="btn btn-outline btn-lg">
+                            <i class="fas fa-users" style="margin-right: 0.5rem;"></i>
+                            Find Blood
+                        </a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div>
+                            <div class="hero-stat-value">10K+</div>
+                            <div class="hero-stat-label">Active Donors</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-value">500+</div>
+                            <div class="hero-stat-label">Lives Saved</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-value">2 min</div>
+                            <div class="hero-stat-label">Avg Match Time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-demo">
+                    <div class="hero-card">
+                        <div class="match-found">
+                            <div class="pulse-dot"></div>
+                            <div>
+                                <div class="match-text-primary">Match Found!</div>
+                                <div class="match-text-secondary">Compatible donor 2.3km away</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="info-item">
+                                <span>Blood Type: O+</span>
+                                <span class="urgent-label">URGENT</span>
+                            </div>
+                            <div class="info-item">
+                                <span>Location: City Hospital</span>
+                                <i class="fas fa-clock" style="color: #9ca3af;"></i>
+                            </div>
+                            <div class="info-item">
+                                <span>Security: HIPAA Compliant</span>
+                                <i class="fas fa-shield-alt security-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-floating-1"></div>
+                    <div class="hero-floating-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2>Why Choose Our Platform?</h2>
+                <p style="font-size: 1.25rem; color: #4b5563; max-width: 48rem; margin: 1rem auto 0;">
+                    Advanced technology meets humanitarian purpose. Our platform revolutionizes blood donation 
+                    with smart matching, real-time tracking, and seamless user experience.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3 class="card-title">Real-Time Matching</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            AI-powered algorithm instantly matches compatible donors with patients based on blood type, location, and urgency.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3 class="card-title">Location-Based Search</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Find the nearest available donors or blood banks within your area for faster response times.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="card-title">Secure & Private</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            HIPAA-compliant platform ensuring all medical information is encrypted and protected.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3 class="card-title">24/7 Availability</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Round-the-clock access to emergency blood requests and donor notifications.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3 class="card-title">Mobile-First Design</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Optimized mobile app for quick access during emergencies and on-the-go donations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3 class="card-title">Community Network</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Build a trusted network of verified donors and healthcare providers in your area.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="card-title">Smart Notifications</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Intelligent alerts for urgent requests, appointment reminders, and donation opportunities.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="card-title">Inventory Tracking</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Real-time blood bank inventory management with expiration date tracking and alerts.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 class="card-title">Impact Dashboard</h3>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">
+                            Track your donation history and see the lives you've helped save through detailed analytics.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2>How It Works</h2>
+                <p style="font-size: 1.25rem; color: #4b5563; max-width: 32rem; margin: 1rem auto 0;">
+                    Four simple steps to connect life-saving donors with patients in need
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon blue">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="step-number">1</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Register</h3>
+                    <p style="color: #6b7280;">Create your profile as a donor or patient with basic medical information</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon purple">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="step-number">2</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Smart Matching</h3>
+                    <p style="color: #6b7280;">Our AI instantly finds compatible matches based on blood type and location</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon red">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="step-number">3</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Connect</h3>
+                    <p style="color: #6b7280;">Get notified of matches and coordinate with healthcare providers</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-container">
+                        <div class="step-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="step-number">4</div>
+                    </div>
+                    <h3 style="color: #111827; margin-bottom: 1rem;">Save Lives</h3>
+                    <p style="color: #6b7280;">Complete the donation process and track your impact on the community</p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                    Emergency? Our platform responds in under 2 minutes for critical cases.
+                </p>
+                <div class="emergency-badge">
+                    <div class="pulse-dot"></div>
+                    <span>24/7 Emergency Response Available</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2>Making a Real Impact</h2>
+                <p style="font-size: 1.25rem; color: #fecaca; max-width: 32rem; margin: 1rem auto 0;">
+                    See how our platform is transforming blood donation and saving lives across communities
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">10,247</div>
+                    <div class="stat-label">Active Donors</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        +23% this month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value">1,586</div>
+                    <div class="stat-label">Lives Saved</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        +156 this week
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value">2.3 min</div>
+                    <div class="stat-label">Average Match Time</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        -45% faster
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="stat-value">127</div>
+                    <div class="stat-label">Cities Covered</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        +8 new cities
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-stats">
+                <div>
+                    <div class="bottom-stat-value">99.7%</div>
+                    <div class="bottom-stat-label">Success Rate</div>
+                </div>
+                <div>
+                    <div class="bottom-stat-value">24/7</div>
+                    <div class="bottom-stat-label">Platform Availability</div>
+                </div>
+                <div>
+                    <div class="bottom-stat-value"><30s</div>
+                    <div class="bottom-stat-label">Emergency Response</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <div>
+                    <h2 style="color: #111827; margin-bottom: 1rem;">Ready to Save Lives?</h2>
+                    <p style="font-size: 1.25rem; color: #4b5563; margin-bottom: 2rem;">
+                        Join thousands of heroes making a difference in their communities. 
+                        Every donation counts, every match saves a life.
+                    </p>
+
+                    <div class="cta-cards">
+                        <div class="cta-card donor">
+                            <div class="cta-card-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Be a Donor</h3>
+                            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Help save lives in your community</p>
+                            <a href="#" class="btn btn-primary" style="width: 100%;">
+                                Register as Donor
+                                <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                            </a>
+                        </div>
+
+                        <div class="cta-card patient">
+                            <div class="cta-card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3 style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Find Blood</h3>
+                            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Connect with compatible donors</p>
+                            <a href="#" class="btn btn-outline" style="width: 100%; border-color: #2563eb; color: #2563eb;">
+                                Search Now
+                                <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center; margin-top: 2rem;">
+                        <div class="registration-info">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Download our mobile app for instant notifications</span>
+                        </div>
+                        <div class="app-badges">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+                                 alt="Get it on Google Play" class="app-badge">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
+                                 alt="Download on the App Store" class="app-badge">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="position: relative;">
+                    <div style="background: white; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 2rem;">
+                        <div class="text-center mb-6">
+                            <h3 style="color: #111827; margin-bottom: 0.5rem;">Quick Registration</h3>
+                            <p style="color: #6b7280;">Get started in less than 2 minutes</p>
+                        </div>
+                        
+                        <div>
+                            <div class="benefit-item green">
+                                <div class="benefit-check">✓</div>
+                                <span class="benefit-text">HIPAA Compliant</span>
+                            </div>
+                            
+                            <div class="benefit-item blue">
+                                <div class="benefit-check">✓</div>
+                                <span class="benefit-text">24/7 Support</span>
+                            </div>
+                            
+                            <div class="benefit-item purple">
+                                <div class="benefit-check">✓</div>
+                                <span class="benefit-text">Real-time Matching</span>
+                            </div>
+                        </div>
+
+                        <div class="disclaimer">
+                            <p class="disclaimer-text">
+                                By registering, you agree to our Terms of Service and Privacy Policy
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <i class="fas fa-heart"></i>
+                            <span>BloodConnect</span>
+                        </div>
+                        <p class="footer-description">
+                            Smart blood donation platform connecting donors and patients through real-time matching technology.
+                        </p>
+                        <div class="social-links">
+                            <i class="fab fa-facebook"></i>
+                            <i class="fab fa-twitter"></i>
+                            <i class="fab fa-instagram"></i>
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Find Donors</a></li>
+                        <li><a href="#">Register as Donor</a></li>
+                        <li><a href="#">Blood Banks</a></li>
+                        <li><a href="#">Emergency Request</a></li>
+                        <li><a href="#">How It Works</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Safety Guidelines</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (555) 123-BLOOD</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>help@bloodconnect.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>24/7 Emergency Line</span>
+                    </div>
+                    <div class="emergency-contact">
+                        <div class="emergency-contact-title">Emergency?</div>
+                        <div class="emergency-contact-text">Call 911 or use our instant match feature</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 BloodConnect. All rights reserved. Licensed healthcare platform.
+                </p>
+                <div class="footer-badges">
+                    <span>HIPAA Compliant</span>
+                    <span>FDA Approved</span>
+                    <span>ISO 27001 Certified</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking on links
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
